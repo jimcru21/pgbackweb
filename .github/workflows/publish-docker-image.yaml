@@ -6,7 +6,7 @@ on:
       commit:
         description: "Commit SHA or branch to build"
         required: true
-        default: "main"
+        default: "develop"
       tags:
         description: "Array of docker image tags to build and push separated by commas"
         required: true
@@ -41,7 +41,7 @@ jobs:
           IFS=',' read -r -a tags <<< "${{ github.event.inputs.tags }}"
           tag_args=""
           for tag in "${tags[@]}"; do
-            tag_args="$tag_args -t eduardolat/pgbackweb:$tag"
+            tag_args="$tag_args -t ${{ secrets.DOCKERHUB_USER }}/pgbackweb:$tag"
           done
 
           docker buildx build \
