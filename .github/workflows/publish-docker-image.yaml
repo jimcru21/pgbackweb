@@ -17,6 +17,10 @@ jobs:
         with:
           ref: ${{ github.event.inputs.commit }}
 
+          
+      - name: Inject slug/short variables
+        uses: rlespinasse/github-slug-action@v5
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -31,7 +35,7 @@ jobs:
           context: ./
           file: ./docker/Dockerfile
           platforms: linux/amd64,linux/arm64
-          tags: ${{ secrets.DOCKERHUB_USER }}/pgbackweb:${{ env.GITHUB_REF_SLUG }}
+          tags: ${{ secrets.DOCKERHUB_USER }}/pgbackweb:latest
           outputs: ${{ github.event_name == 'pull_request' && 'type=cacheonly' || 'type=registry,push=true' }}
 
       
