@@ -37,7 +37,7 @@ jobs:
           IFS=',' read -r -a tags <<< "${{ github.event.inputs.tags }}"
           tag_args=""
           for tag in "${tags[@]}"; do
-            tag_args="$tag_args -t ${{ secrets.DOCKERHUB_USER }}/pgbackweb:$tag"
+            tag_args="$tag_args -t ${{ secrets.DOCKERHUB_USER }}/pgbackweb:latest"
           done
 
           docker buildx build \
