@@ -29,7 +29,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
-       - name: Build Staging
+      - name: Build Staging
         uses: docker/build-push-action@v5
         env:
           BRANCH_NAME: ${{ github.ref_name }}
