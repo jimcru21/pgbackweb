@@ -5,7 +5,7 @@ on:
     branches:
       - develop
 
-      
+
 
 jobs:
   build-and-publish:
@@ -29,19 +29,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
 
-      - name: Build and push Docker image
-        run: |
-          docker buildx create --use
+       - name: Build Staging
+        uses: docker/build-push-action@v5
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+        with:
+          context: ./
+          file: ./docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ secrets.DOCKER_USERNAME }}/pgbackweb:${{ env.GITHUB_REF_SLUG }}
+          outputs: ${{ github.event_name == 'pull_request' && 'type=cacheonly' || 'type=registry,push=true' }}
 
-          IFS=',' read -r -a tags <<< "${{ github.event.inputs.tags }}"
-          tag_args=""
-          for tag in "${tags[@]}"; do
-            tag_args="$tag_args -t ${{ secrets.DOCKERHUB_USER }}/pgbackweb:$tag"
-          done
-
-          docker buildx build \
-            --platform linux/amd64,linux/arm64 \
-            --build-arg TARGETPLATFORM \
-            $tag_args \
-            -f ./docker/Dockerfile \
-            --push .
+      
