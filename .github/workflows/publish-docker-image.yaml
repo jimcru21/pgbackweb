@@ -34,10 +34,10 @@ jobs:
         run: |
           docker buildx create --use
 
-          IFS=',' read -r -a tags <<< "${{ github.event.inputs.tags }}"
+          IFS=',' read -r -a tags <<< "latest"
           tag_args=""
           for tag in "${tags[@]}"; do
-            tag_args="$tag_args -t ${{ secrets.DOCKERHUB_USER }}/pgbackweb:latest"
+            tag_args="$tag_args -t ${{ secrets.DOCKERHUB_USER }}/pgbackweb:$tag"
           done
 
           docker buildx build \
