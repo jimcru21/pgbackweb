@@ -1,16 +1,9 @@
 name: Build & Publish Docker Image
 
 on:
-  workflow_dispatch:
-    inputs:
-      commit:
-        description: "Commit SHA or branch to build"
-        required: true
-        default: "develop"
-      tags:
-        description: "Array of docker image tags to build and push separated by commas"
-        required: true
-        default: "latest"
+  push:
+    branches:
+      - develop
 
 jobs:
   build-and-publish:
